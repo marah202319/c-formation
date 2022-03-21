@@ -10,25 +10,18 @@ namespace Serie_I
     {
         public static int Pgcd(int a, int b)
         {
-            int c = 0;
-            int r = a % b;
-            if (r == 0)
-            {
-                c = b;
-            }
-            for (int i = b; i >1; i--)
+            
+            for (int i = b; i >= 1; i--)
             {
                 if (a % i == 0 && b % i == 0)
-                    c = i;
+                    return i;
             }
-            return c;
-
-            
+            return 0;
         }
 
         public static int PgcdRecursive(int a, int b)
         {
-                   
+
             int r = a % b;
             if (r == 0)
                 return b;

@@ -24,10 +24,11 @@ namespace Serie_I
             Factorial.Factorial_(6);
            // Factorial.FactorialRecursive(5);
             Console.WriteLine(Factorial.FactorialRecursive(5));
-            //PrimeNumbers.DisplayPrimes();
+            PrimeNumbers.DisplayPrimes();
             //Console.Writeline(Euclide.PgcdRecursive(25, 30));
             Console.WriteLine(Euclide.PgcdRecursive(25, 30));
-            Console.WriteLine(Euclide.Pgcd(25, 30));
+            Console.WriteLine(Euclide.Pgcd(144, 11));
+            Console.WriteLine(Euclide.Pgcd(144, 28));
             // Keep the console window open
             Console.WriteLine("----------------------");
             Console.WriteLine("Press any key to exit.");
