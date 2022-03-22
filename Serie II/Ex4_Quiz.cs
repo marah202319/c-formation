@@ -46,7 +46,7 @@ namespace Serie_II
 
                 }
                 Console.WriteLine("  ");
-                Console.WriteLine("Réponse : ");
+                Console.Write("Réponse : ");
                 String rep = Console.ReadLine();
                 int reponse;
                 int.TryParse(rep,out reponse);
