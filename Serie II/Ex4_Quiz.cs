@@ -51,10 +51,10 @@ namespace Serie_II
                 int reponse;
                 int.TryParse(rep,out reponse);
 
-                while (reponse > qcm.Answers.Length || reponse <0 )
+                while (reponse > qcm.Answers.Length || reponse <0 || !int.TryParse(rep, out reponse))
                 {
                     Console.WriteLine("Reponse invalide !");
-                    Console.WriteLine("Réponse : ");
+                    Console.Write("Réponse : ");
                     rep = Console.ReadLine();                    
                     int.TryParse(rep, out reponse);
                 }
