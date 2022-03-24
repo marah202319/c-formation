@@ -8,7 +8,7 @@ namespace Serie_IV
 {
     public class Morse
     {
-        private const string Taah = "===";
+        private const string Taah = "====";
         private const string Ti = "=";
         private const string Point = ".";
         private const string PointLetter = "...";
