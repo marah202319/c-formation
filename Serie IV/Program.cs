@@ -17,7 +17,7 @@ namespace Serie_IV
             BusinessSchedule e = new BusinessSchedule();
             TimeSpan duration = new TimeSpan(1, 12, 23, 62);
             e.AddBusinessMeeting(DateTime.Now, duration);
-            e.AddBusinessMeeting(DateTime.UtcNow, duration);
+         //   e.AddBusinessMeeting(DateTime.UtcNow, duration);
 
             e.DisplayMeetings();
             // Keep the console window open

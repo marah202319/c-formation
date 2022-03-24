@@ -23,6 +23,7 @@ namespace Serie_IV
             if (_emploi.Count == 0)
                 return true;
             return false;
+
         }
 
         public void SetRangeOfDates(DateTime begin, DateTime end)
