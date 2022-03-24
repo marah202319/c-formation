@@ -10,6 +10,7 @@ namespace Hello
     {
         static void Main(string[] args)
         {
+            //
             string firstname = Console.ReadLine();
             Console.WriteLine("Hello  " + firstname +"!");
 
