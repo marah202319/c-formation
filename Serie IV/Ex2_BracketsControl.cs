@@ -10,7 +10,7 @@ namespace Serie_IV
     {
         public static bool BracketsControls(string sentence)
         {
-            //TODO
+            //T
             return false;
         }
     }
