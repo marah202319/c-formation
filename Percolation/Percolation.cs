@@ -25,7 +25,7 @@ namespace Percolation
             _size = size;
         }
 
-        private bool IsOpen(int i, int j)
+        public bool IsOpen(int i, int j)
         {
             if (i < 0 || j<0 || i>= _size || j>= _size)
             {
@@ -59,12 +59,63 @@ namespace Percolation
 
         private List<KeyValuePair<int, int>> CloseNeighbors(int i, int j)
         {
-            throw new NotImplementedException();
+            var voisin = new List<KeyValuePair<int, int>>();
+            if( i-1 >= 0)
+            {
+                voisin.Add(KeyValuePair<int,int>(i-1,j));
+            }
+            if( j-1 >= 0)
+            {
+                voisin.Add(KeyValuePair<int,int>(i,j-1));
+            }
+            if( i+1 < _size)
+            {
+                voisin.Add(KeyValuePair<int,int>(i+1,j));
+            }
+            if( j+1 < _size)
+            {
+                voisin.Add(KeyValuePair<int,int>(i,j+1));
+            }
+
+            return voisin;
+           // throw new NotImplementedException();
         }
 
-        private void Open(int i, int j)
+        public void Open(int i, int j)
         {
-            throw new NotImplementedException();
+            _open[i,j]= true
+            if (i != 0)
+            {
+                var voisinpro = CloseNeighbors(i,j);
+                foreach(var voisins in voisinpro)
+                {
+                    if(IsFull(voisins.Key, voisins.Value))
+                    {
+                        _full[i,j] = true;
+                        verifvoisins(i,j);
+                    }
+                }
+                
+            }
+            else
+            {
+                _full[i,j]=true;
+                verifvoisins(i,j);
+
+            }
+            //throw new NotImplementedException();
+        }
+        public void verifvoisins(int i,int j)
+        {
+            var voisin = CloseNeighbors(i,j);
+            foreach(var voisins in voisin)
+            {
+                if(!IsFull(voisins.Key,voisins.Value)&& IsOpen(voisins(voisins.Key, voisins.Value){
+                    _full[voisins.Key,voisins.Value]=true;
+                    verifvoisins(voisins.Key,voisins.Value);
+                }
+
+            }
         }
     }
 }

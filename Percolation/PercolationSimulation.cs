@@ -24,12 +24,45 @@ namespace Percolation
     {
         public PclData MeanPercolationValue(int size, int t)
         {
-            throw new NotImplementedException();
+            PclData p =new PclData();
+            var valpercol= new double[t];
+            double s1 =0;
+            double s2 =0;
+            double moyenne=0;
+            double ecarttype=0;
+            for(int i = 0; i < t; i++)
+            {
+                valpercol[i]=PercolationValue(size);
+                s1 += valpercol[i];
+                s2 += valpercol[i]*valpercol[i]
+            }
+            moyenne=s1/t;
+            ecarttype = Math.Sqrt((s2/t)-(moyenne*moyenne));
+            p.Mean=moyenne;
+            p.StandardDeviation=ecarttype;
+            p.RelativeStd=ecarttype/moyenne;
+
+          //  throw new NotImplementedException();
         }
 
         public double PercolationValue(int size)
         {
-            throw new NotImplementedException();
+            int  ouvertes=0;            
+            var percolation = new Percolation(size);
+            var r = new Random();
+            int  totcases = size*size;
+            while(!percolation.Percolate())
+            {
+                int r1=r.Next(0, size);
+                int r2=r.Next(0, size);
+                if (!percolation.IsOpen(r1,r2)
+                {
+                    percolation.Open(r1,r2);
+                    ouvertes++;
+                }
+            }
+            return ouvertes/totcases;
+           // throw new NotImplementedException();
         }
     }
 }
