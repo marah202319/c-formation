@@ -34,13 +34,14 @@ namespace Percolation
             {
                 valpercol[i]=PercolationValue(size);
                 s1 += valpercol[i];
-                s2 += valpercol[i]*valpercol[i]
+                s2 += valpercol[i]*valpercol[i];
             }
             moyenne=s1/t;
             ecarttype = Math.Sqrt((s2/t)-(moyenne*moyenne));
             p.Mean=moyenne;
             p.StandardDeviation=ecarttype;
             p.RelativeStd=ecarttype/moyenne;
+            return p;
 
           //  throw new NotImplementedException();
         }
@@ -55,7 +56,7 @@ namespace Percolation
             {
                 int r1=r.Next(0, size);
                 int r2=r.Next(0, size);
-                if (!percolation.IsOpen(r1,r2)
+                if (!percolation.IsOpen(r1,r2))
                 {
                     percolation.Open(r1,r2);
                     ouvertes++;

@@ -48,7 +48,7 @@ namespace Percolation
         {
             for(int i=0; i< _size; i++)
             {
-                if (IsFull(_size, i))
+                if (IsFull(_size-1, i))
                 {
                     return true;
                 }
@@ -62,19 +62,19 @@ namespace Percolation
             var voisin = new List<KeyValuePair<int, int>>();
             if( i-1 >= 0)
             {
-                voisin.Add(KeyValuePair<int,int>(i-1,j));
+                voisin.Add(new KeyValuePair<int,int>(i-1,j));
             }
             if( j-1 >= 0)
             {
-                voisin.Add(KeyValuePair<int,int>(i,j-1));
+                voisin.Add(new KeyValuePair<int,int>(i,j-1));
             }
             if( i+1 < _size)
             {
-                voisin.Add(KeyValuePair<int,int>(i+1,j));
+                voisin.Add(new KeyValuePair<int,int>(i+1,j));
             }
             if( j+1 < _size)
             {
-                voisin.Add(KeyValuePair<int,int>(i,j+1));
+                voisin.Add(new KeyValuePair<int,int>(i,j+1));
             }
 
             return voisin;
@@ -83,7 +83,7 @@ namespace Percolation
 
         public void Open(int i, int j)
         {
-            _open[i,j]= true
+            _open[i,j]= true;
             if (i != 0)
             {
                 var voisinpro = CloseNeighbors(i,j);
@@ -110,7 +110,7 @@ namespace Percolation
             var voisin = CloseNeighbors(i,j);
             foreach(var voisins in voisin)
             {
-                if(!IsFull(voisins.Key,voisins.Value)&& IsOpen(voisins(voisins.Key, voisins.Value){
+                if(!IsFull(voisins.Key,voisins.Value)&& IsOpen(voisins.Key, voisins.Value)){
                     _full[voisins.Key,voisins.Value]=true;
                     verifvoisins(voisins.Key,voisins.Value);
                 }
