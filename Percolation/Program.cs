@@ -10,7 +10,7 @@ namespace Percolation
     {
         static void Main(string[] args)
         {
-            /*3-b/  dans le pire des cas on va ouvrir une case qui un voisin plein et tt les autres cases ne sont pas plein.a ce moment on va les rendre pleines et la grille sera full.performance linéaire:O(n)
+            /*3-b/  dans le pire des cas on va ouvrir une case qui un voisin plein et tt les autres cases ne sont pas plein.a ce moment on va les rendre pleines et la grille sera full.performance exponentielle.
              * 3-c/ parceque si on a une case pleine, le reste ne seront pas tous ouvert.
              * 
              */ 
