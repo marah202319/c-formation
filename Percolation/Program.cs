@@ -14,7 +14,7 @@ namespace Percolation
              * 3-c/ parceque si on a une case pleine, le reste ne seront pas tous ouvert.
              * 
              */ 
-            Percolation pp = new Percolation(10);
+            //Percolation pp = new Percolation(10);
             //pp.
             PercolationSimulation p = new PercolationSimulation();
             p.PercolationValue(10);
