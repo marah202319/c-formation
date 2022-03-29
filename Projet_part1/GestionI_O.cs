@@ -90,18 +90,12 @@ namespace Projet_part1
 					}	
 					  else if (int.TryParse(stringId, out id) && !transactions.ContainsKey(id))
                     {
-                        transaction = new Transaction(
-                            Transaction.TransactionType.Virement,
-                            Transaction.TransactionStatus.KO,                            
-                            id);
+                        transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.KO,id);
                         transactions.Add(id, transaction);
                     }         
                       else
                     {
-                        transaction = new Transaction(
-                            Transaction.TransactionType.Virement,
-                            Transaction.TransactionStatus.KO
-                            );
+                        transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.KO);
                         transactions.Add(id, transaction);
                     }	
 					}
