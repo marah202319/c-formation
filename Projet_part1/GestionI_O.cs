@@ -32,7 +32,7 @@ namespace Projet_part1
                         
 						if (int.TryParse(stringId, out id) && !comptes.ContainsKey(id))
 						{
-							if (stringsolde == " ")
+							if ( string.IsNullOrWhiteSpace(stringsolde))
 							{
                                // stringsolde = "0";
                                //solde = 0 ;
