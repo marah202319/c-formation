@@ -49,6 +49,7 @@ namespace Projet_part1
 			}
 		}
         Dictionary<int, Transaction> transactions = new Dictionary<int, Transaction>();
+        int id1;
 		public void LireTransactions(string trxnPath)
 		{
 			using (StreamReader sr = new StreamReader(trxnPath))
@@ -61,7 +62,7 @@ namespace Projet_part1
 					string stringSolde = data[1].Replace('.', ',');
 					string stringTransmetteur = data[2];
 					string stringRecepteur = data[3];
-					int id;
+					int id;                   
 					double solde;
                     int transmetteur=0;
                     int recepteur=0;
@@ -95,8 +96,9 @@ namespace Projet_part1
                     }         
                       else
                     {
+                        id1=id;
                         transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.KO);
-                        transactions.Add(id, transaction);
+                        transactions.Add(-id, transaction);
                     }	
 					}
 				}
@@ -187,6 +189,8 @@ namespace Projet_part1
                 {
                     if (t.Key > 0)                       
                         sw.WriteLine(t.Key +";"+t.Value.Status);
+                    else
+                        sw.WriteLine(id1 +";"+t.Value.Status);
                 }
             };
         }        
