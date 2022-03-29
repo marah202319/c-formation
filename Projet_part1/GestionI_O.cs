@@ -26,7 +26,7 @@ namespace Projet_part1
 						string stringId = data[0];
 						if (data.Length > 1)
 						{
-							stringsolde = data[1];
+							stringsolde = data[1].Replace('.', ',');
 
 						}
                         
@@ -58,7 +58,7 @@ namespace Projet_part1
 					string Data1 = sr.ReadLine();
 					string[] data = Data1.Split(';');
 					string stringId = data[0];
-					string stringSolde = data[1];
+					string stringSolde = data[1].Replace('.', ',');
 					string stringTransmetteur = data[2];
 					string stringRecepteur = data[3];
 					int id;
@@ -102,7 +102,7 @@ namespace Projet_part1
                             Transaction.TransactionType.Virement,
                             Transaction.TransactionStatus.KO
                             );
-                        transactions.Add(0, transaction);
+                        transactions.Add(id, transaction);
                     }	
 					}
 				}
