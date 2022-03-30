@@ -36,6 +36,7 @@ namespace Projet_part2
             g.LireTransactions(trxnPath);
             g.EcrireTransactionsStatus(sttsTrxnPath);
             g.EcrireOperationsStatus(sttsAcctPath);
+            g.EcrireMetrologie(mtrlPath);
             
             
             // Keep the console window open

@@ -26,8 +26,8 @@ namespace Projet_part2
 		}
 		public enum TypeFrais
         {
-			fraisParticulier,
-			fraisEntreprise
+			PERCENTAGE,
+			FIXE
         }
 		public enum TypeOperation
         {

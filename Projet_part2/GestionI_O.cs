@@ -139,13 +139,13 @@ namespace Projet_part2
 					}	
 					  else if (int.TryParse(stringId, out id) && !transactions.ContainsKey(id))
                     {
-                        transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.KO,Transaction.OperationStatus.KO,date,id);
+                        transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.KO,Transaction.OperationStatus.OK,date,id);
                         transactions.Add(id, transaction);
                     }         
                       else
                     {
                         id1=id;
-                        transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.KO,Transaction.OperationStatus.KO,date);
+                        transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.KO,Transaction.OperationStatus.OK,date);
                         transactions.Add(-id, transaction);
                     }	
 					}
@@ -157,13 +157,13 @@ namespace Projet_part2
             foreach (var account in comptes)
             {               
                  Console.Write(account.Value.Solde.ToString("F")+ " ");
-                 Console.WriteLine(account.Value.Date);
+                // Console.WriteLine(account.Value.Date);
             }
             Console.WriteLine();
 
             foreach (var t in transactions)
             {
-                Console.WriteLine(t.Value.DateTransaction);
+               // Console.WriteLine(t.Value.DateTransaction);
                 if (t.Value.Status == Transaction.TransactionStatus.OK)
                 {
                     if (t.Value.Type == Transaction.TransactionType.Depot)
@@ -171,7 +171,11 @@ namespace Projet_part2
                         if (comptes.ContainsKey(t.Value.Recepteur))
                         {
                             if (comptes[t.Value.Recepteur].depot(t.Value.Somme, t.Value))
+                            {
                                 t.Value.Status = Transaction.TransactionStatus.OK;
+                                t.Value.Opestat = Transaction.OperationStatus.OK;
+                            }
+                                
                             else
                                 t.Value.Status = Transaction.TransactionStatus.KO;
                         }
@@ -197,7 +201,7 @@ namespace Projet_part2
                         {
                             if (t.Value.Somme > 0 && comptes[t.Value.Transmetteur].retrait(t.Value.Somme, t.Value))
                             {
-                               Transaction transaction = new Transaction(Transaction.TransactionType.Prelevement,Transaction.TransactionStatus.OK,Transaction.OperationStatus.KO,DateTime.Now,t.Value.Id,t.Value.Somme,t.Value.Recepteur,t.Value.Transmetteur);
+                               Transaction transaction = new Transaction(Transaction.TransactionType.Prelevement,Transaction.TransactionStatus.OK,Transaction.OperationStatus.OK,DateTime.Now,t.Value.Id,t.Value.Somme,t.Value.Recepteur,t.Value.Transmetteur);
                                comptes[t.Value.Recepteur].depot(t.Value.Somme, transaction);
                                t.Value.Status = Transaction.TransactionStatus.OK;
                             }
@@ -248,7 +252,7 @@ namespace Projet_part2
         {
             using (StreamWriter sw = new StreamWriter(sttsPath))
             {
-                Traitements();
+                //Traitements();
                 foreach (var t in transactions)
                 {
                     if (t.Key > 0)                       
@@ -258,6 +262,24 @@ namespace Projet_part2
                 }
             };
         }  
+        public void EcrireMetrologie(string sttsPath)
+        {
+            using (StreamWriter sw = new StreamWriter(sttsPath))
+            {
+                //Traitements();
+                sw.WriteLine("Statistiques :");
+                sw.WriteLine("Nombre de comptes :");
+                sw.WriteLine("Nombre de transactions :");
+                sw.WriteLine("Nombre de réussites :");
+                sw.WriteLine("Nombre d'échecs :");
+                sw.WriteLine("Montant total des réussites : "+0+" euros");
+                sw.WriteLine();
+                sw.WriteLine("Frais de gestions :");
+                sw.WriteLine();
+                sw.WriteLine("Identifant gestionnaire :"+0+" euros");
+
+            };
+        } 
         public void Creationc(int id, DateTime date, double solde = 0, int entree=0 , int sortie = 0)
         {
             foreach (var c in comptes)
