@@ -154,6 +154,10 @@ namespace Projet_part2
 		private void Traitements()
         {
             Console.Write("     ");
+            /*foreach(var g in gestionnaires)
+            {
+                Console.WriteLine(g.Value.typeGestionnaire1);
+            }*/
             foreach (var account in comptes)
             {               
                  Console.Write(account.Value.Solde.ToString("F")+ " ");

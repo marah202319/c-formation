@@ -28,6 +28,7 @@ namespace Projet_part2
             GestionI_O g = new GestionI_O();
             g.LireComptes(acctPath);
             g.LireTransactions(trxnPath);
+            g.LireGestionnaires(mngrPath);
             g.EcrireTransactionsStatus(sttsTrxnPath);
             g.EcrireOperationsStatus(sttsAcctPath);
 
