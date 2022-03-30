@@ -35,6 +35,8 @@ namespace Projet_part2
             g.LireComptes(acctPath);
             g.LireTransactions(trxnPath);
             g.EcrireTransactionsStatus(sttsTrxnPath);
+            g.EcrireOperationsStatus(sttsAcctPath);
+            
             
             // Keep the console window open
             Console.WriteLine("-----------------------------------------");

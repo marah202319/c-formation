@@ -163,6 +163,7 @@ namespace Projet_part2
 
             foreach (var t in transactions)
             {
+                Console.WriteLine(t.Value.DateTransaction);
                 if (t.Value.Status == Transaction.TransactionStatus.OK)
                 {
                     if (t.Value.Type == Transaction.TransactionType.Depot)
@@ -243,5 +244,19 @@ namespace Projet_part2
                 }
             };
         }        
+        public void EcrireOperationsStatus(string sttsPath)
+        {
+            using (StreamWriter sw = new StreamWriter(sttsPath))
+            {
+                Traitements();
+                foreach (var t in transactions)
+                {
+                    if (t.Key > 0)                       
+                        sw.WriteLine(t.Key +";"+t.Value.Opestat);
+                    else
+                        sw.WriteLine(id1 +";"+t.Value.Opestat);
+                }
+            };
+        }  
 		}
 	}
