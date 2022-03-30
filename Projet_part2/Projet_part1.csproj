@@ -47,6 +47,7 @@
     <Compile Include="Transaction.cs" />
     <Compile Include="ProgramProjet.cs" />
 	  <Compile Include="GestionI_O.cs" />
+	  <Compile Include="Gestionnaires.cs" />
 	  <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

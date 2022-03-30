@@ -9,6 +9,38 @@ namespace Projet_part2
 {
 	public class GestionI_O
 	{
+        Dictionary<int, Gestionnaires> gestionnaires = new Dictionary<int, Gestionnaires>();
+        public void LireGestionnaires(string path)
+        {
+           // List<Gestionnaires> ges = new List<Gestionnaires>();
+            string[] data;
+            int nbTransactions=0;
+
+            using (StreamReader reader = new StreamReader(path))
+            {
+                while (!reader.EndOfStream)
+                {
+                    data = reader.ReadLine().Split(';');
+                    if (data.Length == 3)
+                    {
+                        //foreach(Gestionnaires g in ges)
+                        data[2]=data[2].Replace(".",",");
+                        string stringId = data[0];
+                        int.TryParse(data[2], out nbTransactions);
+                        if(data[1]=="Particulier" && nbTransactions > 0)
+                        {
+                            gestionnaires.Add(int.Parse(stringId),new Gestionnaires(int.Parse(stringId),Gestionnaires.TypeGestionnaire.Particulier,nbTransactions));
+                        }
+                        if(data[1]=="Entreprise" && nbTransactions > 0)
+                        {
+                            gestionnaires.Add(int.Parse(stringId),new Gestionnaires(int.Parse(stringId),Gestionnaires.TypeGestionnaire.Entreprise,nbTransactions));
+                        }
+
+                    }              
+                
+                }            
+            }
+        }
 		Dictionary<int, Compte> comptes = new Dictionary<int, Compte>();
 
 		public void LireComptes(string acctPath)
@@ -19,28 +51,41 @@ namespace Projet_part2
 				{
 					int id;
 					double solde = 0;
+                    DateTime date;
+                    int entree=0;
+                    int sortie=0;
+
 					string stringsolde = "";
+                    string stringdate = "";
+                    string stringentree="";
+                    string stringsortie="";
 					string[] data = sr.ReadLine().Split(';');
 					if (data.Length > 0)
 					{
 						string stringId = data[0];
-						if (data.Length > 1)
+						if (data.Length == 5)
 						{
-							stringsolde = data[1].Replace('.', ',');
+							stringsolde = data[2].Replace('.', ',');
+                            stringdate= data[1];
+                            stringentree=data[3];
+                            stringsortie=data[4];
+                            
+
 
 						}
                         
-						if (int.TryParse(stringId, out id) && !comptes.ContainsKey(id))
+						if (int.TryParse(stringId, out id) && int.TryParse(stringentree, out entree) && int.TryParse(stringsortie, out sortie)&& DateTime.TryParse(stringdate,out date )&& !comptes.ContainsKey(id))
 						{
 							if ( string.IsNullOrWhiteSpace(stringsolde))
 							{
                                // stringsolde = "0";
                                //solde = 0 ;
-								comptes.Add(id, new Compte(id,0));
+                               //Compte(int id,DateTime dateCrea, double solde=0,int entree,int sortie)
+								comptes.Add(id, new Compte(id,date,0,entree,sortie));
 							}
 							else if (double.TryParse(stringsolde, out solde) && solde >= 0)
 							{
-								comptes.Add(id, new Compte(id, solde));
+								comptes.Add(id, new Compte(id,date,solde,entree,sortie));
 
 							}
 						}
@@ -59,19 +104,22 @@ namespace Projet_part2
 					string Data1 = sr.ReadLine();
 					string[] data = Data1.Split(';');
 					string stringId = data[0];
-					string stringSolde = data[1].Replace('.', ',');
-					string stringTransmetteur = data[2];
-					string stringRecepteur = data[3];
-					int id;                   
+                    string stringdate = data[1];
+					string stringSolde = data[2].Replace('.', ',');
+					string stringTransmetteur = data[3];
+					string stringRecepteur = data[4];
+					int id;        
+                    DateTime date=DateTime.Parse(data[1]);
 					double solde;
                     int transmetteur=0;
                     int recepteur=0;
                     Transaction transaction;
                    
                                         
-                    if (int.TryParse(stringId, out id) && double.TryParse(stringSolde, out solde) && int.TryParse(stringTransmetteur, out transmetteur) && int.TryParse(stringRecepteur, out recepteur) && !transactions.ContainsKey(id))
+                    if (int.TryParse(stringId, out id) && DateTime.TryParse(stringdate,out date ) && double.TryParse(stringSolde, out solde) && int.TryParse(stringTransmetteur, out transmetteur) && int.TryParse(stringRecepteur, out recepteur) && !transactions.ContainsKey(id))
                     {
-                        transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.OK,id,solde,transmetteur,recepteur);
+                        //Transaction (TransactionType type, TransactionStatus status,OperationStatus opestat,DateTime dateTransaction, int id=0, double somme=0,int transmetteur=0,int recepteur=0)
+                        transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.OK,Transaction.OperationStatus.KO,date,id,solde,transmetteur,recepteur);
 					
 					    if (transmetteur == 0 && recepteur != 0)
                         {
@@ -91,13 +139,13 @@ namespace Projet_part2
 					}	
 					  else if (int.TryParse(stringId, out id) && !transactions.ContainsKey(id))
                     {
-                        transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.KO,id);
+                        transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.KO,Transaction.OperationStatus.KO,date,id);
                         transactions.Add(id, transaction);
                     }         
                       else
                     {
                         id1=id;
-                        transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.KO);
+                        transaction = new Transaction(Transaction.TransactionType.Virement,Transaction.TransactionStatus.KO,Transaction.OperationStatus.KO,date);
                         transactions.Add(-id, transaction);
                     }	
 					}
@@ -109,6 +157,7 @@ namespace Projet_part2
             foreach (var account in comptes)
             {               
                  Console.Write(account.Value.Solde.ToString("F")+ " ");
+                 Console.WriteLine(account.Value.Date);
             }
             Console.WriteLine();
 
@@ -147,7 +196,7 @@ namespace Projet_part2
                         {
                             if (t.Value.Somme > 0 && comptes[t.Value.Transmetteur].retrait(t.Value.Somme, t.Value))
                             {
-                               Transaction transaction = new Transaction(Transaction.TransactionType.Prelevement,Transaction.TransactionStatus.OK,t.Value.Id,t.Value.Somme,t.Value.Recepteur,t.Value.Transmetteur);
+                               Transaction transaction = new Transaction(Transaction.TransactionType.Prelevement,Transaction.TransactionStatus.OK,Transaction.OperationStatus.KO,DateTime.Now,t.Value.Id,t.Value.Somme,t.Value.Recepteur,t.Value.Transmetteur);
                                comptes[t.Value.Recepteur].depot(t.Value.Somme, transaction);
                                t.Value.Status = Transaction.TransactionStatus.OK;
                             }

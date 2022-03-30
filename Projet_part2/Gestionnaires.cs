@@ -10,17 +10,38 @@ namespace Projet_part2
 {
 	public class Gestionnaires
 	{
-		public int Id { get; set; }
-		public TypeGestionnaire Type;
-		public int Nbrtransactions;		
-		Dictionary<int, Compte> comptes;
+		public int Id { get; set; }		
+		public int Nbrtransactions;
+		public List<Transaction> ListTransactions;
+		public TypeFrais Typefrais;
+		public TypeGestionnaire typeGestionnaire1;
+		public double Frais;
+
 		
-		public Gestionnaires(int id, TypeGestionnaire type, int nbrtransactions)
+		Dictionary<int, Compte> comptes;
+		public enum TypeGestionnaire
 		{
-			Id = id;
-			Type = type;
+			Particulier,
+			Entreprise
+		}
+		public enum TypeFrais
+        {
+			fraisParticulier,
+			fraisEntreprise
+        }
+		public enum TypeOperation
+        {
+			Transaction,
+			Compte
+        }
+
+		public Gestionnaires(int id,TypeGestionnaire typeGestionnaire, int nbrtransactions)
+		{
+			Id = id;			
 			Nbrtransactions = nbrtransactions;
-			comptes= = new Dictionary<int, Compte>();
+			typeGestionnaire1 = typeGestionnaire;
+			
+			ListTransactions = new List<Transaction>();
 		}
 	}
 }
