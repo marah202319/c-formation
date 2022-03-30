@@ -42,6 +42,7 @@ namespace Projet_part2
 			typeGestionnaire1 = typeGestionnaire;
 			
 			ListTransactions = new List<Transaction>();
-		}
+		}		
+
 	}
 }

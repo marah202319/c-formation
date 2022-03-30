@@ -258,5 +258,62 @@ namespace Projet_part2
                 }
             };
         }  
+        public void Creationc(int id, DateTime date, double solde = 0, int entree=0 , int sortie = 0)
+        {
+            foreach (var c in comptes)
+            {
+                if (id !=c.Key )
+                {
+                    comptes.Add(id,new Compte(id,date,solde,entree,sortie));
+                    foreach(var t in transactions)
+                    {
+                        if (t.Key==id)
+                    {
+                        t.Value.Opestat =Transaction.OperationStatus.OK;                                
+                    }
+                    }
+                    
+                }
+            }
+        }
+        public void Cloturec(int id, DateTime date, double solde = 0, int entree = 0, int sortie=0 )
+        {
+            foreach (var c in comptes)
+            {
+                if (id ==c.Key )
+                {                    
+                    comptes.Add(-id,new Compte(-id,DateTime.Now,0,0,sortie));
+                    foreach(var t in transactions)
+                    {
+                        if (t.Key==id)
+                    {
+                        t.Value.Opestat =Transaction.OperationStatus.OK;                                
+                    }
+                    }
+                }
+            }
+        }
+        public void Cessionc(int id, DateTime date,int id1, DateTime date1, double solde = 0, int entree = 0, int sortie=0, double solde1 = 0, int entree1 = 0, int sortie1=0)
+        {  
+            int ide;
+            DateTime datee;
+            double soldee = 0;
+            int entreee = 0;
+            int sortiee=0;
+                foreach(var g in gestionnaires)
+            {
+                if (id1 == g.Key && id == g.Key && comptes.ContainsKey(id1) && comptes.ContainsKey(id))
+                {                    
+                    ide=id;
+                    //Compte(id,date,solde,entree,sortie)=Compte(id1,date1,solde1,entree1,sortie1);
+                }
+            } 
+            
+                                       
+        }
+        public void ReceptionC()
+        {
+
+        }
 		}
 	}
