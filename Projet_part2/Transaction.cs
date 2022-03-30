@@ -49,6 +49,7 @@ namespace Projet_part2
 		}
 		/*public Transaction (int id=0,double somme=0,int transmetteur=0,int recepteur=0)
 		{
+
 			Id = id;
 			Somme = somme;
 			Transmetteur = transmetteur;

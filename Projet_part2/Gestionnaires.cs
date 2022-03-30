@@ -39,8 +39,7 @@ namespace Projet_part2
 		{
 			Id = id;			
 			Nbrtransactions = nbrtransactions;
-			typeGestionnaire1 = typeGestionnaire;
-			
+			typeGestionnaire1 = typeGestionnaire;			
 			ListTransactions = new List<Transaction>();
 		}		
 

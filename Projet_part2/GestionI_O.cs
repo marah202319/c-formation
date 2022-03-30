@@ -278,6 +278,7 @@ namespace Projet_part2
                 sw.WriteLine();
                 sw.WriteLine("Identifant gestionnaire :"+0+" euros");
 
+
             };
         } 
         public void Creationc(int id, DateTime date, double solde = 0, int entree=0 , int sortie = 0)

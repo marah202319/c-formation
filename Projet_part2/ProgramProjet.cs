@@ -25,17 +25,12 @@ namespace Projet_part2
 
             //TODO: Votre implémentation
 
-            
-           /* string path = Directory.GetCurrentDirectory();
-            string acctPath = path + @"\Comptes_1.txt";
-            string trxnPath = path + @"\Transactions_1.txt";
-            string sttsPath = path + @"\Statut_1.txt";
-           */
             GestionI_O g = new GestionI_O();
             g.LireComptes(acctPath);
             g.LireTransactions(trxnPath);
             g.EcrireTransactionsStatus(sttsTrxnPath);
             g.EcrireOperationsStatus(sttsAcctPath);
+
             g.EcrireMetrologie(mtrlPath);
             
             

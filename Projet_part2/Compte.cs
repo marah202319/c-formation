@@ -26,8 +26,7 @@ namespace Projet_part2
 			Date=date;
 			Solde = solde;
 			Entree=entree;
-			Sortie=sortie;
-			
+			Sortie=sortie;			
 			Max_retrait = 1000;
 			transactions = new List<Transaction>();
 		}
