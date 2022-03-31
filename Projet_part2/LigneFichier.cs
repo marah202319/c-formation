@@ -2,7 +2,7 @@
 
 namespace Projet_part2
 {
-    internal class LigneFichier
+    public class LigneFichier
     {
         public LigneFichier(int id, DateTime date, double montant, int entree, int sortie, TypeOperation type)
         {

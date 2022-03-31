@@ -81,6 +81,16 @@ namespace Projet_part2
 
             _lignes = _lignes.OrderBy(x => x.Date).ThenBy(x => x.Type).ToList();
         }
+        public void CreatC(Compte c)
+        {
+            foreach(var acc in _comptes.Values)
+            {
+                if (acc.Id == c.Id)
+                {
+
+                }
+            }
+        }
 
         internal void TraiterFichiers()
         {
@@ -93,15 +103,45 @@ namespace Projet_part2
                     case TypeOperation.Operation:
                         if (ligne.Entree != 0 && ligne.Sortie == 0)
                         {
-                            statutsOpe.Add($"{ligne.Id};OK");
+                            foreach (var gstn in _gestionnaires)
+                            {
+                                if (gstn.Key == ligne.Sortie)
+                                {
+                                    Console.WriteLine(ligne.Id + "Compte créé");
+                                    Compte c = new Compte(ligne.Id, ligne.Date, ligne.Montant);
+                                    _comptes.Add(ligne.Id, c);
+                                    statutsOpe.Add($"{ligne.Id};OK");
+                                    break;
+                                }
+                            }
                         }
                         else if (ligne.Entree != 0 && ligne.Sortie == 0)
                         {
-
+                            foreach (var gstn in _gestionnaires)
+                            {
+                                if (gstn.Key == ligne.Sortie)
+                                {
+                                    foreach (var element in _comptes)
+                                    {
+                                        if (element.Key == ligne.Sortie)
+                                        {
+                                            element.Value.Date = ligne.Date;
+                                            //ListCompte.Remove(element);
+                                            Console.WriteLine($"{element.Value.Date} - {ligne.Date}");
+                                        }
+                                    }
+                                }
+                            }
                         }
                         else if (ligne.Entree != 0 && ligne.Sortie != 0)
                         {
-
+                            if (_gestionnaires.ContainsKey(ligne.Entree) && _gestionnaires.ContainsKey(ligne.Sortie))
+                            {
+                                Console.WriteLine($"{ligne.Id} - Entree:{ligne.Entree} Compte cessionner");
+                                ligne.Entree = ligne.Sortie;
+                                Console.WriteLine($"{ligne.Id} - Entree:{ligne.Entree} Compte cessionner");
+                                statutsOpe.Add($"{ligne.Id};OK");
+                            }
                         }
                         break;
                     case TypeOperation.Transaction:

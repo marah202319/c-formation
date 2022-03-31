@@ -20,13 +20,11 @@ namespace Projet_part2
 		public List<Transaction> transactions { get; set; }
 
 
-		public Compte(int id,DateTime date, double solde=0,int entree=0,int sortie=0)
+		public Compte(int id,DateTime date, double solde=0)
 		{
 			Id = id;
 			Date=date;
-			Solde = solde;
-			Entree=entree;
-			Sortie=sortie;			
+			Solde = solde;						
 			Max_retrait = 1000;
 			transactions = new List<Transaction>();
 		}

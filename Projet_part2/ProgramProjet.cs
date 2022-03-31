@@ -15,13 +15,13 @@ namespace Projet_part2
 
             string path = Directory.GetCurrentDirectory();
             // Fichiers entrée
-            string mngrPath = path + @"\Gestionnaires.txt";
-            string acctPath = path + @"\Comptes.txt";
-            string trxnPath = path + @"\Transactions.txt";
+            string mngrPath = path + @"\Gestionnaires_1.txt";
+            string acctPath = path + @"\Comptes_1.txt";
+            string trxnPath = path + @"\Transactions_1.txt";
             //Fichiers sortie
-            string sttsAcctPath = path + @"\StatutOpe.txt";
-            string sttsTrxnPath = path + @"\StatutTra.txt";
-            string mtrlPath = path + @"\Metrologie.txt";
+            string sttsAcctPath = path + @"\StatutOpe_1.txt";
+            string sttsTrxnPath = path + @"\StatutTra_1.txt";
+            string mtrlPath = path + @"\Metrologie_1.txt";
 
             //TODO: Votre implémentation
 

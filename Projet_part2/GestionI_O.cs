@@ -9,7 +9,7 @@ namespace Projet_part2
 {
 	public class GestionI_O
 	{
-        Dictionary<int, Gestionnaire> gestionnaires = new Dictionary<int, Gestionnaire>();
+      /*  Dictionary<int, Gestionnaire> gestionnaires = new Dictionary<int, Gestionnaire>();
 
         public void LireGestionnaires(string path)
         {
@@ -272,7 +272,7 @@ namespace Projet_part2
             /*if(comptes[gestionnaires.Values].Entree!=0 && comptes[gestionnaires.Keys].Sortie==0 )
             {
               Creationc(comptes[gestionnaires.Keys].Id,comptes[gestionnaires.Keys].Date,comptes[gestionnaires.Keys].Solde,comptes[gestionnaires.Keys].Entree,comptes[gestionnaires.Keys].Sortie);               
-            }*/
+            }*//*
             foreach(var c in comptes)
             {                  
                 if(c.Value.Entree !=0 && c.Value.Sortie==0)
@@ -326,7 +326,7 @@ namespace Projet_part2
                 /*else
                 {
                     t.Value.Opestat=Transaction.OperationStatus.OK;
-                }*/
+                }*//*
                 
             }
 
@@ -393,7 +393,7 @@ namespace Projet_part2
                         t.Value.Opestat =Transaction.OperationStatus.OK;                                
                     }
                     }*/
-                    
+                    /*
                 }
             }
         }
@@ -420,7 +420,7 @@ namespace Projet_part2
             /*DateTime datee;
             double soldee = 0;
             int entreee = 0;
-            int sortiee=0;*/
+            int sortiee=0;*//*
                 foreach(var g in gestionnaires)
             {
                 if (id1 == g.Key && id == g.Key && comptes.ContainsKey(id1) && comptes.ContainsKey(id))
@@ -435,6 +435,6 @@ namespace Projet_part2
         public void ReceptionC()
         {
 
-        }
+        }*/
 		}
 	}
