@@ -154,20 +154,20 @@ namespace Projet_part2
 		private void Traitements()
         {
             Console.Write("     ");
-            /*foreach(var g in gestionnaires)
+            foreach(var g in gestionnaires)
             {
-                Console.WriteLine(g.Value.typeGestionnaire1);
-            }*/
+                Console.WriteLine("gestionnaire type : "+g.Value.typeGestionnaire1);
+            }
             foreach (var account in comptes)
             {               
                  Console.Write(account.Value.Solde.ToString("F")+ " ");
-                // Console.WriteLine(account.Value.Date);
+                 Console.WriteLine("date compte : "+account.Value.Date);
             }
             Console.WriteLine();
 
             foreach (var t in transactions)
             {
-               // Console.WriteLine(t.Value.DateTransaction);
+                Console.WriteLine("date transaction :" +t.Value.DateTransaction);
                 if (t.Value.Status == Transaction.TransactionStatus.OK)
                 {
                     if (t.Value.Type == Transaction.TransactionType.Depot)
@@ -177,27 +177,35 @@ namespace Projet_part2
                             if (comptes[t.Value.Recepteur].depot(t.Value.Somme, t.Value))
                             {
                                 t.Value.Status = Transaction.TransactionStatus.OK;
-                                t.Value.Opestat = Transaction.OperationStatus.OK;
+                                //t.Value.Opestat = Transaction.OperationStatus.OK;
                             }
                                 
                             else
                                 t.Value.Status = Transaction.TransactionStatus.KO;
+                                //t.Value.Opestat = Transaction.OperationStatus.KO;
                         }
                         else
                             t.Value.Status = Transaction.TransactionStatus.KO;
-
+                           // t.Value.Opestat = Transaction.OperationStatus.KO;
                     }
                     if (t.Value.Type == Transaction.TransactionType.Retrait)
                     {
                         if (comptes.ContainsKey(t.Value.Transmetteur))
                         {
-                            if (comptes[t.Value.Transmetteur].retrait(t.Value.Somme, t.Value))
+                            if (comptes[t.Value.Transmetteur].retrait(t.Value.Somme, t.Value)){
                                 t.Value.Status = Transaction.TransactionStatus.OK;
-                            else
+                               // t.Value.Opestat = Transaction.OperationStatus.OK;
+                            }                                
+                            else{
                                 t.Value.Status = Transaction.TransactionStatus.KO;
+                                //t.Value.Opestat = Transaction.OperationStatus.KO;
+                            }                              
                         }
-                        else
+                        else{
                             t.Value.Status = Transaction.TransactionStatus.KO;
+                           // t.Value.Opestat = Transaction.OperationStatus.KO;                        
+                        }
+                            
                     }
                     if (t.Value.Type == Transaction.TransactionType.Virement)
                     {
@@ -208,12 +216,18 @@ namespace Projet_part2
                                Transaction transaction = new Transaction(Transaction.TransactionType.Prelevement,Transaction.TransactionStatus.OK,Transaction.OperationStatus.OK,DateTime.Now,t.Value.Id,t.Value.Somme,t.Value.Recepteur,t.Value.Transmetteur);
                                comptes[t.Value.Recepteur].depot(t.Value.Somme, transaction);
                                t.Value.Status = Transaction.TransactionStatus.OK;
+                               //t.Value.Opestat = Transaction.OperationStatus.OK;
                             }
-                            else
+                            else{
                                 t.Value.Status = Transaction.TransactionStatus.KO;
+                                //t.Value.Opestat= Transaction.OperationStatus.KO;
+                            }
+                                
                         }
-                        else
-                            t.Value.Status = Transaction.TransactionStatus.KO;
+                        else{
+                             t.Value.Status = Transaction.TransactionStatus.KO;
+                           // t.Value.Opestat= Transaction.OperationStatus.KO;
+                        }                          
                     }
                 }
                 if (t.Key > 0)
@@ -238,6 +252,46 @@ namespace Projet_part2
                 }
             }
         }
+        private void Traitements1()
+        {          
+          foreach (var t in transactions)
+          {
+            /*if(comptes[gestionnaires.Values].Entree!=0 && comptes[gestionnaires.Keys].Sortie==0 )
+            {
+              Creationc(comptes[gestionnaires.Keys].Id,comptes[gestionnaires.Keys].Date,comptes[gestionnaires.Keys].Solde,comptes[gestionnaires.Keys].Entree,comptes[gestionnaires.Keys].Sortie);               
+            }*/
+            foreach(var c in comptes)
+            {
+                if(c.Value.Entree !=0 && c.Value.Sortie==0 && gestionnaires.ContainsKey(c.Value.Entree))
+                {
+                    Creationc(c.Key,c.Value.Date,c.Value.Solde,c.Value.Entree,c.Value.Sortie);    
+                    if (t.Value.Recepteur==c.Key || t.Value.Transmetteur==c.Key )
+                            t.Value.Opestat= Transaction.OperationStatus.OK;
+                }   
+                if(c.Value.Entree ==0 && c.Value.Sortie!=0 && gestionnaires.ContainsKey(c.Value.Sortie) )
+                {
+                    Cloturec(c.Key,c.Value.Date,c.Value.Solde,c.Value.Entree,c.Value.Sortie);    
+                    if (t.Value.Recepteur==c.Key || t.Value.Transmetteur==c.Key )
+                            t.Value.Opestat= Transaction.OperationStatus.OK;
+                }  
+                if(c.Value.Entree ==0 && c.Value.Sortie!=0 && !gestionnaires.ContainsKey(c.Value.Sortie) )
+                {
+                    if (t.Value.Recepteur==c.Key || t.Value.Transmetteur==c.Key )
+                            t.Value.Opestat= Transaction.OperationStatus.KO;
+                }
+                if(c.Value.Entree !=0 && c.Value.Sortie!=0 && gestionnaires.ContainsKey(c.Value.Sortie) && gestionnaires.ContainsKey(c.Value.Entree))
+                {
+                    //Cessionc();
+                    ReceptionC();
+                    t.Value.Opestat=Transaction.OperationStatus.OK;                
+                }               
+                
+            }
+
+          }          
+            
+                   
+        }
 		public void EcrireTransactionsStatus(string sttsPath)
         {
             using (StreamWriter sw = new StreamWriter(sttsPath))
@@ -256,7 +310,7 @@ namespace Projet_part2
         {
             using (StreamWriter sw = new StreamWriter(sttsPath))
             {
-                //Traitements();
+                Traitements1();
                 foreach (var t in transactions)
                 {
                     if (t.Key > 0)                       
@@ -290,13 +344,13 @@ namespace Projet_part2
                 if (id !=c.Key )
                 {
                     comptes.Add(id,new Compte(id,date,solde,entree,sortie));
-                    foreach(var t in transactions)
+                    /*foreach(var t in transactions)
                     {
                         if (t.Key==id)
                     {
                         t.Value.Opestat =Transaction.OperationStatus.OK;                                
                     }
-                    }
+                    }*/
                     
                 }
             }
