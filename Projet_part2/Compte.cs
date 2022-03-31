@@ -13,8 +13,8 @@ namespace Projet_part2
 		public double Solde { get; set; }
 		private int Max_retrait { get; set; }
 		public DateTime Date;
-		public int Entree;
-		public int Sortie;
+		//public int Entree;
+		//public int Sortie;
 		//public DateTime DateRes;
 
 		public List<Transaction> transactions { get; set; }

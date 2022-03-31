@@ -1,0 +1,127 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Projet_part2
+{
+    public class Banque
+    {
+        Dictionary<int, Gestionnaire> _gestionnaires;
+        Dictionary<int, Compte> _comptes;
+        List<Transaction> _transactions;
+        List<LigneFichier> _lignes;
+
+        public Banque()
+        {
+            _gestionnaires = new Dictionary<int, Gestionnaire>();
+            _comptes = new Dictionary<int, Compte>();
+            _transactions = new List<Transaction>();
+        }
+
+        internal void LireGestionnaires(string mngrPath)
+        {
+            using (StreamReader reader = new StreamReader(mngrPath))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string[] data = reader.ReadLine().Split(';');
+                    if (data.Length == 3)
+                    {
+                        int id = int.Parse(data[0]);
+                        TypeGestionnaire type = data[1] == "Entreprise" ? TypeGestionnaire.Entreprise : TypeGestionnaire.Particulier;
+                        int.TryParse(data[2].Replace(".", ","), out int nbTransactions);
+                        if (nbTransactions >= 0 && !_gestionnaires.ContainsKey(id))
+                        {
+                            _gestionnaires.Add(id, new Gestionnaire(id, type, nbTransactions));
+                        }
+                    }
+                }
+            }
+        }
+
+        internal void LireFichiers(string acctPath, string trxnPath)
+        {
+            using (StreamReader reader = new StreamReader(acctPath))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string[] data = reader.ReadLine().Split(';');
+                    if (data.Length == 5)
+                    {
+                        int.TryParse(data[0], out int id);
+                        DateTime.TryParse(data[1], out DateTime date);
+                        int.TryParse(data[2].Replace(".", ","), out int montant);
+                        int.TryParse(data[3], out int entree);
+                        int.TryParse(data[4], out int sortie);
+
+                        _lignes.Add(new LigneFichier(id, date, montant, entree, sortie, TypeOperation.Operation));
+                    }
+                }
+            }
+            using (StreamReader reader = new StreamReader(trxnPath))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string[] data = reader.ReadLine().Split(';');
+                    if (data.Length == 5)
+                    {
+                        int.TryParse(data[0], out int id);
+                        DateTime.TryParse(data[1], out DateTime date);
+                        int.TryParse(data[2].Replace(".", ","), out int montant);
+                        int.TryParse(data[3], out int entree);
+                        int.TryParse(data[4], out int sortie);
+
+                        _lignes.Add(new LigneFichier(id, date, montant, entree, sortie, TypeOperation.Transaction));
+                    }
+                }
+            }
+
+            _lignes = _lignes.OrderBy(x => x.Date).ThenBy(x => x.Type).ToList();
+        }
+
+        internal void TraiterFichiers()
+        {
+            List<string> statutsOpe = new List<string>();
+            List<string> statutsTra = new List<string>();
+            foreach (LigneFichier ligne in _lignes)
+            {
+                switch (ligne.Type)
+                {
+                    case TypeOperation.Operation:
+                        if (ligne.Entree != 0 && ligne.Sortie == 0)
+                        {
+                            statutsOpe.Add($"{ligne.Id};OK");
+                        }
+                        else if (ligne.Entree != 0 && ligne.Sortie == 0)
+                        {
+
+                        }
+                        else if (ligne.Entree != 0 && ligne.Sortie != 0)
+                        {
+
+                        }
+                        break;
+                    case TypeOperation.Transaction:
+                        Transaction t = new Transaction(ligne.Id, ligne.Date, ligne.Montant, ligne.Entree, ligne.Sortie);
+                        if (t.Transmetteur != 0 && t.Recepteur == 0)
+                        {
+
+                        }
+                        else if (t.Transmetteur != 0 && t.Recepteur == 0)
+                        {
+
+                        }
+                        else if (t.Transmetteur != 0 && t.Recepteur != 0)
+                        {
+
+                        }
+
+                        break;
+                }
+            }
+        }
+    }
+}

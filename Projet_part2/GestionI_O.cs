@@ -9,7 +9,8 @@ namespace Projet_part2
 {
 	public class GestionI_O
 	{
-        Dictionary<int, Gestionnaires> gestionnaires = new Dictionary<int, Gestionnaires>();
+        Dictionary<int, Gestionnaire> gestionnaires = new Dictionary<int, Gestionnaire>();
+
         public void LireGestionnaires(string path)
         {
            // List<Gestionnaires> ges = new List<Gestionnaires>();
@@ -27,13 +28,13 @@ namespace Projet_part2
                         data[2]=data[2].Replace(".",",");
                         string stringId = data[0];
                         int.TryParse(data[2], out nbTransactions);
-                        if(data[1]=="Particulier" && nbTransactions > 0)
+                        if(data[1]=="Particulier" && nbTransactions >= 0)
                         {
-                            gestionnaires.Add(int.Parse(stringId),new Gestionnaires(int.Parse(stringId),Gestionnaires.TypeGestionnaire.Particulier,nbTransactions));
+                            gestionnaires.Add(int.Parse(stringId),new Gestionnaires(int.Parse(stringId),Gestionnaire.TypeGestionnaire.Particulier,nbTransactions));
                         }
-                        if(data[1]=="Entreprise" && nbTransactions > 0)
+                        if(data[1]=="Entreprise" && nbTransactions >= 0)
                         {
-                            gestionnaires.Add(int.Parse(stringId),new Gestionnaires(int.Parse(stringId),Gestionnaires.TypeGestionnaire.Entreprise,nbTransactions));
+                            gestionnaires.Add(int.Parse(stringId),new Gestionnaires(int.Parse(stringId),Gestionnaire.TypeGestionnaire.Entreprise,nbTransactions));
                         }
 
                     }              
@@ -41,6 +42,7 @@ namespace Projet_part2
                 }            
             }
         }
+
 		Dictionary<int, Compte> comptes = new Dictionary<int, Compte>();
 
 		public void LireComptes(string acctPath)
@@ -73,11 +75,22 @@ namespace Projet_part2
 
 
 						}
+                        if(!int.TryParse(stringentree, out entree) || !int.TryParse(stringsortie, out sortie)){
+                            if (string.IsNullOrWhiteSpace(stringentree)){
+                                entree =0;
+                            }
+                            if (string.IsNullOrWhiteSpace(stringsortie)){
+                                sortie=0;
+                            }                        
+                        }
                         
-						if (int.TryParse(stringId, out id) && int.TryParse(stringentree, out entree) && int.TryParse(stringsortie, out sortie)&& DateTime.TryParse(stringdate,out date )&& !comptes.ContainsKey(id))
+						if (int.TryParse(stringId, out id) && DateTime.TryParse(stringdate,out date )&& !comptes.ContainsKey(id))
 						{
 							if ( string.IsNullOrWhiteSpace(stringsolde))
 							{
+                              //  entree= int.Parse(stringentree);
+                              //  sortie= int.Parse(stringsortie);
+                               //if conditions  && int.TryParse(stringentree, out entree) && int.TryParse(stringsortie, out sortie)
                                // stringsolde = "0";
                                //solde = 0 ;
                                //Compte(int id,DateTime dateCrea, double solde=0,int entree,int sortie)
@@ -85,6 +98,7 @@ namespace Projet_part2
 							}
 							else if (double.TryParse(stringsolde, out solde) && solde >= 0)
 							{
+                               
 								comptes.Add(id, new Compte(id,date,solde,entree,sortie));
 
 							}
@@ -156,7 +170,7 @@ namespace Projet_part2
             Console.Write("     ");
             foreach(var g in gestionnaires)
             {
-                Console.WriteLine("gestionnaire type : "+g.Value.typeGestionnaire1);
+                Console.WriteLine("gestionnaire type : "+g.Value.typeGestionnaire);
             }
             foreach (var account in comptes)
             {               
@@ -253,42 +267,70 @@ namespace Projet_part2
             }
         }
         private void Traitements1()
-        {          
-          foreach (var t in transactions)
-          {
+        {    
+          Console.WriteLine("dsvdsfgs");           
             /*if(comptes[gestionnaires.Values].Entree!=0 && comptes[gestionnaires.Keys].Sortie==0 )
             {
               Creationc(comptes[gestionnaires.Keys].Id,comptes[gestionnaires.Keys].Date,comptes[gestionnaires.Keys].Solde,comptes[gestionnaires.Keys].Entree,comptes[gestionnaires.Keys].Sortie);               
             }*/
             foreach(var c in comptes)
-            {
-                if(c.Value.Entree !=0 && c.Value.Sortie==0 && gestionnaires.ContainsKey(c.Value.Entree))
-                {
-                    Creationc(c.Key,c.Value.Date,c.Value.Solde,c.Value.Entree,c.Value.Sortie);    
-                    if (t.Value.Recepteur==c.Key || t.Value.Transmetteur==c.Key )
-                            t.Value.Opestat= Transaction.OperationStatus.OK;
+            {                  
+                if(c.Value.Entree !=0 && c.Value.Sortie==0)
+                {                    
+                    foreach (var t in transactions)
+                    {
+                        if (t.Value.Recepteur==c.Key || t.Value.Transmetteur==c.Key ){
+                            if(gestionnaires.ContainsKey(c.Value.Entree)){
+                                t.Value.Opestat= Transaction.OperationStatus.OK;
+                                Creationc(c.Key,c.Value.Date,c.Value.Solde,c.Value.Entree,c.Value.Sortie);
+                            }
+                            else{
+                                t.Value.Opestat= Transaction.OperationStatus.KO;
+                            }                                
+                        }                               
+                    }
                 }   
-                if(c.Value.Entree ==0 && c.Value.Sortie!=0 && gestionnaires.ContainsKey(c.Value.Sortie) )
+                if(c.Value.Entree ==0 && c.Value.Sortie!=0)
                 {
-                    Cloturec(c.Key,c.Value.Date,c.Value.Solde,c.Value.Entree,c.Value.Sortie);    
-                    if (t.Value.Recepteur==c.Key || t.Value.Transmetteur==c.Key )
-                            t.Value.Opestat= Transaction.OperationStatus.OK;
+                    Cloturec(c.Key,c.Value.Date,c.Value.Solde,c.Value.Entree,c.Value.Sortie); 
+                    foreach (var t in transactions)
+                    {
+                        if (t.Value.Recepteur==c.Key || t.Value.Transmetteur==c.Key ){
+                            if(gestionnaires.ContainsKey(c.Key)){
+                                t.Value.Opestat= Transaction.OperationStatus.OK;
+                            }
+                            else{
+                                t.Value.Opestat= Transaction.OperationStatus.KO;
+                            }                             
+                            
+                        }                                
+                    }
                 }  
                 if(c.Value.Entree ==0 && c.Value.Sortie!=0 && !gestionnaires.ContainsKey(c.Value.Sortie) )
                 {
-                    if (t.Value.Recepteur==c.Key || t.Value.Transmetteur==c.Key )
-                            t.Value.Opestat= Transaction.OperationStatus.KO;
+                    foreach (var t in transactions)
+                    {
+                        if (t.Value.Recepteur==c.Key || t.Value.Transmetteur==c.Key )
+                                t.Value.Opestat= Transaction.OperationStatus.KO;
+                    }
                 }
                 if(c.Value.Entree !=0 && c.Value.Sortie!=0 && gestionnaires.ContainsKey(c.Value.Sortie) && gestionnaires.ContainsKey(c.Value.Entree))
                 {
                     //Cessionc();
                     ReceptionC();
-                    t.Value.Opestat=Transaction.OperationStatus.OK;                
-                }               
+                    foreach (var t in transactions)
+                    {
+                          t.Value.Opestat=Transaction.OperationStatus.OK; 
+                    }    
+                } 
+                /*else
+                {
+                    t.Value.Opestat=Transaction.OperationStatus.OK;
+                }*/
                 
             }
 
-          }          
+                 
             
                    
         }
@@ -310,7 +352,7 @@ namespace Projet_part2
         {
             using (StreamWriter sw = new StreamWriter(sttsPath))
             {
-                Traitements1();
+                Traitements1();                
                 foreach (var t in transactions)
                 {
                     if (t.Key > 0)                       
@@ -343,7 +385,7 @@ namespace Projet_part2
             {
                 if (id !=c.Key )
                 {
-                    comptes.Add(id,new Compte(id,date,solde,entree,sortie));
+                    //comptes.Add(-id,new Compte(id,date,solde,entree,sortie));
                     /*foreach(var t in transactions)
                     {
                         if (t.Key==id)
@@ -375,10 +417,10 @@ namespace Projet_part2
         public void Cessionc(int id, DateTime date,int id1, DateTime date1, double solde = 0, int entree = 0, int sortie=0, double solde1 = 0, int entree1 = 0, int sortie1=0)
         {  
             int ide;
-            DateTime datee;
+            /*DateTime datee;
             double soldee = 0;
             int entreee = 0;
-            int sortiee=0;
+            int sortiee=0;*/
                 foreach(var g in gestionnaires)
             {
                 if (id1 == g.Key && id == g.Key && comptes.ContainsKey(id1) && comptes.ContainsKey(id))
