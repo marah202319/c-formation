@@ -174,7 +174,7 @@ namespace Projet_part2
                         {
                             if (_comptes.ContainsKey(t.Recepteur))
                             {
-                                if (_comptes[t.Recepteur].retrait(t.Somme, t))
+                                if (_comptes[t.Recepteur].depot(t.Somme, t))
                                 {
                                     statutsTra.Add($"{t.Id};OK");
                                 }
@@ -213,7 +213,7 @@ namespace Projet_part2
                     default:
                         Transaction t1 = new Transaction(ligne.Id, ligne.Date, ligne.Montant, ligne.Entree, ligne.Sortie);
                         statutsTra.Add($"{t1.Id};KO");
-                        statutsOpe.Add($"{ligne.Id};OK");
+                        statutsOpe.Add($"{ligne.Id};KO");
 
                         break;
                 }
