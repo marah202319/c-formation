@@ -16,17 +16,19 @@ namespace Projet_part2
 		//public int Entree;
 		//public int Sortie;
 		//public DateTime DateRes;
+		public int Id_gest { get; set; }
 
 		public List<Transaction> transactions { get; set; }
 
 
-		public Compte(int id,DateTime date, double solde=0)
+		public Compte(int id,DateTime date, double solde=0, int id_gest=0)
 		{
 			Id = id;
 			Date=date;
 			Solde = solde;						
 			Max_retrait = 1000;
 			transactions = new List<Transaction>();
+			Id_gest = id_gest;
 		}
 		public bool depot(double somme,Transaction tr)
         {
@@ -39,7 +41,7 @@ namespace Projet_part2
             }
 			return false;
         }
-		public bool retrait(double somme, Transaction tr)
+		public bool Retrait(double somme, Transaction tr)
 		{
 			if ((Solde - somme) > 0 && somme >=0 )
 			{				
