@@ -115,7 +115,7 @@ namespace Projet_part2
                                 }
                             }
                         }
-                        else if (ligne.Entree != 0 && ligne.Sortie == 0)
+                        else if (ligne.Entree == 0 && ligne.Sortie != 0)
                         {
                             foreach (var gstn in _gestionnaires)
                             {
@@ -128,6 +128,7 @@ namespace Projet_part2
                                             element.Value.Date = ligne.Date;
                                             //ListCompte.Remove(element);
                                             Console.WriteLine($"{element.Value.Date} - {ligne.Date}");
+                                            statutsOpe.Add($"{ligne.Id};OK");
                                         }
                                     }
                                 }
@@ -137,10 +138,17 @@ namespace Projet_part2
                         {
                             if (_gestionnaires.ContainsKey(ligne.Entree) && _gestionnaires.ContainsKey(ligne.Sortie))
                             {
-                                Console.WriteLine($"{ligne.Id} - Entree:{ligne.Entree} Compte cessionner");
-                                ligne.Entree = ligne.Sortie;
-                                Console.WriteLine($"{ligne.Id} - Entree:{ligne.Entree} Compte cessionner");
-                                statutsOpe.Add($"{ligne.Id};OK");
+                                foreach(var c in _comptes)
+                                {
+                                    if(c.Key==ligne.Id && _gestionnaires.ContainsKey(ligne.Entree))
+                                    {
+                                        Console.WriteLine($"{ligne.Id} - Entree:{ligne.Entree} Compte cessionner");
+                                        ligne.Entree = ligne.Sortie;
+                                        Console.WriteLine($"{ligne.Id} - Entree:{ligne.Entree} Compte cessionner");
+                                        statutsOpe.Add($"{ligne.Id};OK");
+                                    }
+                                }
+                                statutsOpe.Add($"{ligne.Id};KO");
                             }
                         }
                         break;
