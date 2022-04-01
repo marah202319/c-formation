@@ -81,6 +81,16 @@ namespace Projet_part2
 
             _lignes = _lignes.OrderBy(x => x.Date).ThenBy(x => x.Type).ToList();
         }
+        public void CreatC(Compte c)
+        {
+            foreach(var acc in _comptes.Values)
+            {
+                if (acc.Id == c.Id)
+                {
+
+                }
+            }
+        }
 
         internal void TraiterFichiers()
         {
