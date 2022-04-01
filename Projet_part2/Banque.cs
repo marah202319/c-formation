@@ -93,31 +93,117 @@ namespace Projet_part2
                     case TypeOperation.Operation:
                         if (ligne.Entree != 0 && ligne.Sortie == 0)
                         {
-                            statutsOpe.Add($"{ligne.Id};OK");
+                            foreach (var gstn in _gestionnaires)
+                            {
+                                if (gstn.Key == ligne.Sortie)
+                                {
+                                    Console.WriteLine(ligne.Id + "Compte créé");
+                                    Compte c = new Compte(ligne.Id, ligne.Date, ligne.Montant);
+                                    _comptes.Add(ligne.Id, c);
+                                    statutsOpe.Add($"{ligne.Id};OK");
+                                    break;
+                                }
+                            }
                         }
                         else if (ligne.Entree != 0 && ligne.Sortie == 0)
                         {
-
+                            foreach (var gstn in _gestionnaires)
+                            {
+                                if (gstn.Key == ligne.Sortie)
+                                {
+                                    foreach (var element in _comptes)
+                                    {
+                                        if (element.Key == ligne.Sortie)
+                                        {
+                                            element.Value.Date = ligne.Date;
+                                            //ListCompte.Remove(element);
+                                            Console.WriteLine($"{element.Value.Date} - {ligne.Date}");
+                                        }
+                                    }
+                                }
+                            }
                         }
                         else if (ligne.Entree != 0 && ligne.Sortie != 0)
                         {
-
+                            if (_gestionnaires.ContainsKey(ligne.Entree) && _gestionnaires.ContainsKey(ligne.Sortie))
+                            {
+                                Console.WriteLine($"{ligne.Id} - Entree:{ligne.Entree} Compte cessionner");
+                                ligne.Entree = ligne.Sortie;
+                                Console.WriteLine($"{ligne.Id} - Entree:{ligne.Entree} Compte cessionner");
+                                statutsOpe.Add($"{ligne.Id};OK");
+                            }
                         }
                         break;
+
                     case TypeOperation.Transaction:
                         Transaction t = new Transaction(ligne.Id, ligne.Date, ligne.Montant, ligne.Entree, ligne.Sortie);
                         if (t.Transmetteur != 0 && t.Recepteur == 0)
                         {
-
+                            //TransactionType.Retrait
+                            // _transactions.Add(t.TransactionType.Retrait);
+                            if (_comptes.ContainsKey(t.Transmetteur))
+                            {
+                                if (_comptes[t.Transmetteur].retrait(t.Somme, t))
+                                {
+                                    statutsTra.Add($"{t.Id};OK");
+                                }
+                                else
+                                {
+                                    statutsTra.Add($"{t.Id};KO");
+                                }
+                            }
+                            else
+                            {
+                                statutsTra.Add($"{t.Id};KO");
+                            }
+                            //_transactions.Add(t);
                         }
-                        else if (t.Transmetteur != 0 && t.Recepteur == 0)
+                            
+                        
+                        else if (t.Transmetteur == 0 && t.Recepteur != 0)
                         {
-
+                            if (_comptes.ContainsKey(t.Recepteur))
+                            {
+                                if (_comptes[t.Recepteur].retrait(t.Somme, t))
+                                {
+                                    statutsTra.Add($"{t.Id};OK");
+                                }
+                                else
+                                {
+                                    statutsTra.Add($"{t.Id};KO");
+                                }
+                            }
+                            else
+                            {
+                                statutsTra.Add($"{t.Id};KO");
+                            }
+                            //_transactions.Add(t);
                         }
+
                         else if (t.Transmetteur != 0 && t.Recepteur != 0)
                         {
-
+                            if (_comptes.ContainsKey(t.Recepteur) && _comptes.ContainsKey(t.Transmetteur) && t.Transmetteur!=t.Recepteur)
+                            {
+                                if (_comptes[t.Recepteur].retrait(t.Somme, t) && t.Somme>0)
+                                {
+                                    _comptes[t.Recepteur].depot(t.Somme, t) ;
+                                    statutsTra.Add($"{t.Id};OK");
+                                }
+                                else
+                                {
+                                    statutsTra.Add($"{t.Id};KO");
+                                }
+                            }
+                            else
+                            {
+                                statutsTra.Add($"{t.Id};KO");
+                            }
                         }
+                        break;
+                    default:
+                        Transaction t1 = new Transaction(ligne.Id, ligne.Date, ligne.Montant, ligne.Entree, ligne.Sortie);
+                        statutsTra.Add($"{t1.Id};KO");
+                        statutsOpe.Add($"{ligne.Id};OK");
 
                         break;
                 }
